@@ -1,0 +1,213 @@
+basePath: /
+definitions:
+  models.Event:
+    properties:
+      datetime:
+        type: string
+      description:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+    required:
+    - datetime
+    - description
+    - location
+    - name
+    type: object
+  models.User:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: A GoLang demo API to manage Events
+  title: Events Service API
+  version: "1.0"
+paths:
+  /events:
+    get:
+      description: Get all events from the DB
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Event'
+            type: array
+      summary: Get all events
+      tags:
+      - Events
+    post:
+      description: Create new events and save them to the DB
+      parameters:
+      - description: Create Event
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/models.Event'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Event'
+      security:
+      - ApiKeyAuth: []
+      summary: Create events
+      tags:
+      - Events
+  /events/{id}:
+    delete:
+      description: Deletes one event from the DB by its ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      security:
+      - ApiKeyAuth: []
+      summary: Deletes an even by ID
+      tags:
+      - Events
+    get:
+      description: Get one event from the DB by its ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Event'
+      summary: Get an even by ID
+      tags:
+      - Events
+    put:
+      description: Updates an event by ID
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Update Event
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/models.Event'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Event'
+      security:
+      - ApiKeyAuth: []
+      summary: Update event
+      tags:
+      - Events
+  /events/{id}/attendees:
+    delete:
+      description: Cancel an event registration and delete them from the DB
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+      security:
+      - ApiKeyAuth: []
+      summary: Cancel event registration
+      tags:
+      - Registrations
+    post:
+      description: Create new user registration for events and save them to the DB
+      parameters:
+      - description: Event ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+      security:
+      - ApiKeyAuth: []
+      summary: Register a user for an event
+      tags:
+      - Registrations
+  /login:
+    post:
+      description: Login user by validating user credentials
+      parameters:
+      - description: Login User
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Login a User
+      tags:
+      - Users
+  /signup:
+    post:
+      description: Create a new user and save them to the DB
+      parameters:
+      - description: Create User
+        in: body
+        name: event
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+      summary: Create a User
+      tags:
+      - Users
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
